@@ -1,0 +1,63 @@
+// .eslintrc
+{
+  "plugins": ["prettier", "@typescript-eslint", "sonarjs"],
+  "extends": [
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      },
+      "node": {
+        "extensions": [".js", ".ts"]
+      }
+    },
+    "import/extensions": [".js", ".ts"]
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "object-curly-spacing": ["warn", "always"],
+    "no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "none"
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "none"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": [
+      "warn",
+      {
+        "ignoreRestArgs": true
+      }
+    ],
+    "no-plusplus": [
+      "error",
+      {
+        "allowForLoopAfterthoughts": true
+      }
+    ],
+    "sonarjs/cognitive-complexity": ["error", 30],
+    "no-param-reassign": "off",
+    "endOfLine": "off"
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.ts"],
+      "rules": {
+        "arrow-body-style": "off"
+      }
+    }
+  ]
+}
