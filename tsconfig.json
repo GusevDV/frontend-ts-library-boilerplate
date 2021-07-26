@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "es5",
         "declaration": true,
-        "outDir": "./lib",
+        "outDir": "./dist",
         "strict": true,
         "moduleResolution": "node",
         "sourceMap": true

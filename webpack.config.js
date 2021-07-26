@@ -1,8 +1,8 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
 // Get the package version
 const PACKAGE = require('./package.json');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const version = PACKAGE.version;
 
 module.exports = (env, argv) => {
@@ -12,8 +12,8 @@ module.exports = (env, argv) => {
     let config = {
         entry: './src/index.ts',
         output: {
-            filename: `lib-${version}.js`,
-            path: isEnvDevelopment ? path.resolve(__dirname, 'public') : path.resolve(__dirname, 'lib'),
+            filename: `dist-${version}.js`,
+            path: isEnvDevelopment ? path.resolve(__dirname, 'public') : path.resolve(__dirname, 'dist'),
         },
         devServer: {
             contentBase: path.join(__dirname, 'public'),
@@ -36,9 +36,19 @@ module.exports = (env, argv) => {
     if (isEnvProduction) {
         config.plugins = [
             new CleanWebpackPlugin({
-                cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, 'lib')],
+                cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, 'dist')],
             }),
         ];
+    }
+
+    if (isEnvDevelopment) {
+        config.plugins = [
+            new HtmlWebpackPlugin ({
+                template: path.resolve(__dirname, './index.html'),
+                filename: 'index.html',
+                hash: true,
+            })
+        ]
     }
 
     return config;
