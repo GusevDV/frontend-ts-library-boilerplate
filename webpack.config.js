@@ -1,9 +1,6 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// Get the package version
-const PACKAGE = require('./package.json');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const version = PACKAGE.version;
 
 module.exports = (env, argv) => {
     const isEnvDevelopment = argv.mode === 'development';
@@ -12,44 +9,47 @@ module.exports = (env, argv) => {
     let config = {
         entry: './src/index.ts',
         output: {
-            filename: `dist-${version}.js`,
-            path: isEnvDevelopment ? path.resolve(__dirname, 'public') : path.resolve(__dirname, 'dist'),
+            filename: `dist.js`,
+            path: path.resolve(__dirname, 'dist'),
+            library: 'Multifon',
+            libraryTarget: 'umd',
+            libraryExport: 'default',
         },
         devServer: {
-            contentBase: path.join(__dirname, 'public'),
+            static: path.resolve(__dirname, 'dist'),
             port: 3000,
+            hot: true,
+            open: true
         },
+        plugins: [
+            new CleanWebpackPlugin({
+                cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, 'dist')],
+            }),
+            new HtmlWebpackPlugin({
+                template: path.resolve(__dirname, './index.html'),
+                inject: 'head',
+                filename: 'index.html',
+                hash: true,
+            })
+        ],
         module: {
             rules: [
                 {
                     test: /\.ts?$/,
-                    use: 'ts-loader',
                     exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'ts-loader',
+                        }
+                    ],
                 },
             ],
         },
         resolve: {
             extensions: ['.ts', '.js'],
         },
+        target: ['web', 'es2015'],
     };
-
-    if (isEnvProduction) {
-        config.plugins = [
-            new CleanWebpackPlugin({
-                cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, 'dist')],
-            }),
-        ];
-    }
-
-    if (isEnvDevelopment) {
-        config.plugins = [
-            new HtmlWebpackPlugin ({
-                template: path.resolve(__dirname, './index.html'),
-                filename: 'index.html',
-                hash: true,
-            })
-        ]
-    }
 
     return config;
 };
