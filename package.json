@@ -9,7 +9,7 @@
     "prettier": "npx prettier --write src/*",
     "test": "jest",
     "lint": "eslint . --ext ts src/*",
-    "lint:write": "eslint --fix --color src/*",
+    "lint:write": "eslint --fix --color src/*"
   },
   "author": "Dmitry Gusev",
   "license": "ISC",
